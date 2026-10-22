@@ -16,6 +16,11 @@
 #    # allowed; normally you don't need this).
 #    allowed-origins: https://example.com
 #
+#  security:
+#    # Include the owner password in the settings block the backend logs at
+#    # startup (default: false — password stays out of the logs).
+#    log-password: false
+#
 #  admin:
 #    # Username of the initial owner account created on first start.
 #    username: admin
