@@ -10,7 +10,7 @@ name: smagent
 services:
   smagent:
     # Pinned release. Bump the tag to upgrade (check README for what changed).
-    image: ghcr.io/test/smagent:0.9.4
+    image: ghcr.io/five9th/smagent:0.9.4
 
     container_name: smagent
     restart: unless-stopped
