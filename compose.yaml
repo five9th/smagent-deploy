@@ -55,9 +55,10 @@ services:
       # Database, encryption key, generated secrets. Survives upgrades.
       - smagent-data:/opt/smagent/data
 
-      # OPTIONAL — file-based configuration (deployment.yaml / secrets.yaml),
-      # see README.md "File-based configuration". Create the directory first.
-      #- ./config:/opt/smagent/config:ro
+      # File-based configuration — edit the commented templates in ./config/
+      # (deployment.yaml, secrets.yaml). Everything commented out by default,
+      # so the empty files are harmless; env variables above win over them.
+      - ./config:/opt/smagent/config:ro
 
     stop_grace_period: 30s
 

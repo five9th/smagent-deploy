@@ -41,25 +41,25 @@ variable.
 
 ### File-based configuration
 
-For anything without a variable above, mount YAML files into
-`/opt/smagent/config` (see the commented volume in `compose.yaml`):
-
-```sh
-mkdir config
-# config/deployment.yaml — mirrors the app's application.yaml structure
-# config/secrets.yaml   — same, convenient for credentials
-```
+The `config/` directory ships with two fully commented-out templates:
+`deployment.yaml` (misc settings) and `secrets.yaml` (credentials). The
+compose file mounts it into the container read-only; the backend imports both
+at startup. Uncomment only what you need — environment variables from the
+table above always win over these files, and the files are read once at
+startup.
 
 ```yaml
-# config/deployment.yaml
+# config/deployment.yaml — example
 smagent:
   admin:
     username: boss
-  reddit:
-    base-url: https://oauth.reddit.com
 ```
 
-Environment variables win over these files. Files are read once at startup.
+> **Do not set the base URL in `deployment.yaml`** (`smagent.base-url`).
+> The app's URL belongs in the `APP_BASE_URL` environment variable in
+> `compose.yaml` only — the container derives the SPA routing, CORS origin
+> and cookie settings from that variable, and setting the URL in the file
+> instead desynchronizes them from the backend's OAuth redirects.
 
 ### What lives where
 

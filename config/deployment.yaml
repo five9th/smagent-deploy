@@ -1,0 +1,36 @@
+# SMAgent — optional deployment configuration.
+#
+# The compose file mounts this directory at /opt/smagent/config (read-only);
+# the backend imports this file at startup if present. Uncomment only what
+# you want to change — everything else keeps its built-in default, and
+# environment variables set in compose.yaml always WIN over this file.
+#
+# IMPORTANT: do not set the app's base URL here (smagent.base-url). Use the
+# APP_BASE_URL environment variable in compose.yaml — the container derives
+# the SPA's routing, CORS origin and cookie settings from it. Setting it here
+# desynchronizes those from the backend's OAuth redirects.
+
+#smagent:
+#  cors:
+#    # Extra origins allowed to call the API (the app's own origin is always
+#    # allowed; normally you don't need this).
+#    allowed-origins: https://example.com
+#
+#  admin:
+#    # Username of the initial owner account created on first start.
+#    username: admin
+#
+#  facebook:
+#    graph-api-version: v26.0
+#
+#  reddit:
+#    base-url: https://oauth.reddit.com
+#    token-url: https://www.reddit.com/api/v1/access_token
+#
+#  linkedin:
+#    api-version: "202609"
+#    scope-personal: "openid profile w_member_social"
+#    scope-company: "rw_organization_admin w_organization_social"
+#
+#  x:
+#    scope: "tweet.read tweet.write users.read offline.access"
