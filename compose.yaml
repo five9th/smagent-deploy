@@ -1,0 +1,65 @@
+# SMAgent — self-hosted deployment.
+#
+#   1. Edit the values below (APP_BASE_URL at minimum).
+#   2. docker compose up -d
+#   3. docker compose logs | grep -A4 'admin'   # first-run password
+#
+# Full documentation: README.md next to this file.
+name: smagent
+
+services:
+  smagent:
+    # Pinned release. Bump the tag to upgrade (check README for what changed).
+    image: ghcr.io/test/smagent:0.9.4
+
+    container_name: smagent
+    restart: unless-stopped
+
+    # Publish on localhost only — put your TLS reverse proxy in front
+    # (see README.md; forward the path WITHOUT stripping it).
+    ports:
+      - "127.0.0.1:8080:8080"
+
+    environment:
+      # REQUIRED — the app's external URL including its path. Used to build
+      # OAuth callbacks/redirects; the CORS origin and the SPA's base path
+      # derive from it. Example: https://example.com/myapp
+      APP_BASE_URL: https://example.com/myapp
+
+      # OPTIONAL — path the app is served under (leading + trailing slash).
+      # Defaults to the path part of APP_BASE_URL ('/myapp/' for the example
+      # above, '/' if the app gets its own subdomain).
+      #BASE_PATH: /myapp/
+
+      # OPTIONAL — password of the initial owner account ('admin' by default;
+      # see SMAGENT_ADMIN_USERNAME). If unset, a strong one is generated on
+      # first start, printed to the logs and stored in the data volume.
+      #SMAGENT_ADMIN_PASSWORD: change-me
+
+      # OPTIONAL — 32-byte base64 key for encrypting stored platform
+      # credentials. If unset, a key file is generated inside the data volume.
+      #SMAGENT_ENCRYPTION_KEY: ""
+
+      # Platform OAuth app credentials — REQUIRED by the current backend
+      # release even if you don't use LinkedIn/X (it refuses to start without
+      # them; any non-empty placeholder works until that's fixed).
+      LINKEDIN_CLIENT_ID: ""
+      LINKEDIN_CLIENT_SECRET: ""
+      X_CLIENT_ID: ""
+      X_CLIENT_SECRET: ""
+
+      # OPTIONAL — JVM options. Defaults to container-aware ergonomics.
+      #JAVA_OPTS: -Xmx512m
+
+    volumes:
+      # Database, encryption key, generated secrets. Survives upgrades.
+      - smagent-data:/opt/smagent/data
+
+      # OPTIONAL — file-based configuration (deployment.yaml / secrets.yaml),
+      # see README.md "File-based configuration". Create the directory first.
+      #- ./config:/opt/smagent/config:ro
+
+    stop_grace_period: 30s
+
+volumes:
+  smagent-data:
