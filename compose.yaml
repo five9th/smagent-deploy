@@ -43,6 +43,8 @@ services:
       # Platform OAuth app credentials — REQUIRED by the current backend
       # release even if you don't use LinkedIn/X (it refuses to start without
       # them; any non-empty placeholder works until that's fixed).
+      FACEBOOK_CLIENT_ID: ""
+      FACEBOOK_CLIENT_SECRET: ""
       LINKEDIN_CLIENT_ID: ""
       LINKEDIN_CLIENT_SECRET: ""
       X_CLIENT_ID: ""
