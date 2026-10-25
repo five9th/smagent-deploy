@@ -11,16 +11,20 @@ port and one base path (e.g. `https://example.com/myapp`).
 
 ## Quick start
 
+1. Get these files (clone this repo, or download compose.yaml alone).
+2. Set `APP_BASE_URL` and `SMAGENT_ADMIN_PASSWORD` in the compose file
+3. Run with compose:
+
 ```sh
-# get these files (clone this repo, or download compose.yaml alone)
+# 
 docker compose up -d
-docker compose logs smagent | grep -B1 -A4 'password'
 ```
 
-On first start the container generates and logs the credentials it created:
-the initial owner password for the web UI, and the H2 database password
-(kept in the data volume, you rarely need it). Open the URL you configured
-and log in.
+If you don't set the admin password it will be generated and logged. You can retrieve it with:
+```sh
+# 
+docker compose logs smagent | grep -B1 -A4 'password'
+```
 
 ## Configuration
 
@@ -134,16 +138,7 @@ without it stored platform credentials are unrecoverable.)
 - **Warning: "APP_BASE_URL path ... does not match BASE_PATH"** — align them;
   the SPA calls the API under `BASE_PATH` while redirects use `APP_BASE_URL`.
 - **Database inspection** — the H2 web console is intentionally not exposed.
-  For emergencies:
-
-  ```sh
-  docker compose exec smagent bash -c '
-    cd /tmp && java -Djarmode=tools -jar /opt/smagent/app.jar extract --destination /tmp/h2tools >/dev/null &&
-    java -cp "/tmp/h2tools/BOOT-INF/lib/h2-*.jar" org.h2.tools.Shell \
-      -url "jdbc:h2:file:/opt/smagent/data/smagent;AUTO_SERVER=TRUE" \
-      -user "$(grep ^db_username /opt/smagent/data/.generated-secrets | cut -d= -f2)" \
-      -password "$(grep ^db_password /opt/smagent/data/.generated-secrets | cut -d= -f2)"'
-  ```
+  For emergency DB access: <TODO>
 
 - **Health** — `docker ps` reports the container's health from
   `<base>/actuator/health`.

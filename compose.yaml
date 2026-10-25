@@ -10,7 +10,7 @@ name: smagent
 services:
   smagent:
     # Pinned release. Bump the tag to upgrade (check README for what changed).
-    image: ghcr.io/five9th/smagent:0.10.0
+    image: ghcr.io/five9th/smagent:0.11.2
 
     container_name: smagent
     restart: unless-stopped
@@ -40,9 +40,13 @@ services:
       # credentials. If unset, a key file is generated inside the data volume.
       #SMAGENT_ENCRYPTION_KEY: ""
 
-      # Platform OAuth app credentials — REQUIRED by the current backend
-      # release even if you don't use LinkedIn/X (it refuses to start without
-      # them; any non-empty placeholder works until that's fixed).
+      # Platform OAuth app credentials
+      # Can be set:
+      #  - here;
+      #  - in the config/secrets.yaml;
+      #  - by the user at runtime via /api/admin;
+      #
+      # Note that the values set via /api/admin are stored in DB, survive restarts and OVERRIDE those in config
       FACEBOOK_CLIENT_ID: ""
       FACEBOOK_CLIENT_SECRET: ""
       LINKEDIN_CLIENT_ID: ""
