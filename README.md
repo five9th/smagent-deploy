@@ -6,7 +6,7 @@ port and one base path (e.g. `https://example.com/myapp`).
 
 ## Requirements
 
-- Docker with the Compose plugin (any recent version)
+- Docker with the Compose plugin (packages `docker-ce` `docker-ce-cli` `containerd.io` `docker-compose-plugin`)
 - A reverse proxy with TLS if you want `https://` (recommended; examples below)
 
 ## Quick start
